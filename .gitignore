@@ -11,3 +11,5 @@ types.d.ts
 vite.config.ts
 vite.generated.ts
 tsconfig.json
+bin
+.gradle
