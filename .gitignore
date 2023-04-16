@@ -1,0 +1,13 @@
+.settings
+frontend/generated
+src/main/dev-bundle
+frontend/index.html
+package-lock.json
+node_modules
+target
+.classpath
+.project
+types.d.ts
+vite.config.ts
+vite.generated.ts
+tsconfig.json
