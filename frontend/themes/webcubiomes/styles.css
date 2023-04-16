@@ -1,0 +1,13 @@
+.simple-border {
+	border: 1px solid var(--lumo-contrast-10pct);
+	border-radius: 5px;
+	padding: var(--lumo-space-m);
+}
+
+.monospace {
+	font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", "Ubuntu Mono", Menlo, Courier, monospace;
+}
+
+.main-layout {
+	max-width: 40%;
+}
