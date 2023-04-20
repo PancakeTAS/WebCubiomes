@@ -1,5 +1,8 @@
 package com.minecrafttas.webcubiomes.cubiomes;
 
+/**
+ * Area of Condition
+ */
 public record Area(int minX, int minZ, int maxX, int maxZ, int relative) {
 	
 	public Area(int minX, int minZ, int maxX, int maxZ) {

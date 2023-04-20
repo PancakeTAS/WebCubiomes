@@ -1,5 +1,8 @@
 package com.minecrafttas.webcubiomes.cubiomes;
 
+/**
+ * Seed holder with top and lower bits separated
+ */
 public record Seed(long seed, String top16, String lower48) {
 	
 	public Seed(long seed) {

@@ -1,5 +1,8 @@
 package com.minecrafttas.webcubiomes.cubiomes;
 
+/**
+ * Type of condition filter
+ */
 public enum Filter {
     SELECT("Unknown"),
     QH_IDEAL("Quad-hut (ideal)"),

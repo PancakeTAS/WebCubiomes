@@ -3,12 +3,20 @@ package com.minecrafttas.webcubiomes.cubiomes;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+/**
+ * Cubiomes condition
+ */
 public record Condition(
 	int id,
 	Filter type,
 	Area area
 ) {
 
+	/**
+	 * Parse condition from byte buffer
+	 * @param buf Buffer
+	 * @return Parsed condition
+	 */
 	public static Condition parseCondition(byte[] buf) {
 		var data = ByteBuffer.wrap(buf).order(ByteOrder.LITTLE_ENDIAN);
 		var type = Filter.values()[data.getShort(0)];
