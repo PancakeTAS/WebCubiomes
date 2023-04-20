@@ -22,6 +22,19 @@ public record ProgressFile(String[] initialProgressFile, String mc, boolean is48
 		return newProgressFile.toArray(String[]::new);
 	}
 
+	public String[] obtainJobProgressFile() {
+		var newProgressFile = new ArrayList<String>();
+		for (String l : this.initialProgressFile) {
+			if (l.startsWith("#Progress:"))
+				l = "#Progress: " + Long.toUnsignedString(this.progress.getProgressSector());
+			
+			if (l.contains(":"))
+				newProgressFile.add(l);
+		}
+		
+		return newProgressFile.toArray(String[]::new);
+	}
+	
 	public static ProgressFile parseProgressFile(String[] progressFile) {
 		String mc = null;
 		boolean is48Bit = false;

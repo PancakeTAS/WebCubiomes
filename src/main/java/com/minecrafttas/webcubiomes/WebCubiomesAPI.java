@@ -1,0 +1,84 @@
+package com.minecrafttas.webcubiomes;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.Random;
+
+import com.minecrafttas.webcubiomes.cubiomes.Seed;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+
+/*
+ * Web Cubiomes HTTP API for downloading jobs and uploading progress updates
+ */
+public class WebCubiomesAPI implements HttpHandler {
+
+	private HttpServer httpServer;
+	private Random random;
+	private String seq;
+	
+	/**
+	 * Initialize the web cubiomes api http server
+	 * @throws IOException Networking exception
+	 */
+	public WebCubiomesAPI() throws IOException {
+		this.random = new Random();
+		this.httpServer = HttpServer.create(new InetSocketAddress(3689), 0);
+		this.httpServer.createContext("/", this);
+		this.httpServer.setExecutor(null);
+		this.httpServer.start();
+		this.updateSeq();
+	}
+
+	/**
+	 * Updates the current file sequence
+	 */
+	public void updateSeq() {
+		this.seq = Long.toUnsignedString(this.random.nextLong());
+	}
+	
+	/**
+	 * Handle incoming HTTP request
+	 */
+	@Override
+	public void handle(HttpExchange exchange) throws IOException {
+		var headers = exchange.getRequestHeaders();
+		var status = headers.getFirst("Status");
+		var progressFile = WebCubiomes.getInstance().getProgressFile();
+		var stream = exchange.getResponseBody();
+		try {
+			if (progressFile == null) {
+				exchange.sendResponseHeaders(500, 0);
+			} else if ("Fetch".equals(status)) {
+				var lines = progressFile.obtainJobProgressFile();
+				
+				var job = "";
+				for (String line : lines)
+					job += line + "\n";
+				byte[] out = job.getBytes();
+				
+				exchange.sendResponseHeaders(200, out.length);
+				stream.write(out);
+				stream.close();
+			} else if ("Update".equals(status) && this.seq.equalsIgnoreCase(headers.getFirst("Seq"))) {
+				var progress = Long.parseUnsignedLong(headers.getFirst("Progress"));
+				var seeds = new String(exchange.getRequestBody().readNBytes(Integer.parseInt(exchange.getRequestHeaders().getFirst("Content-Length"))));
+				
+				for (var seed : seeds.split(":"))
+					progressFile.seeds().add(new Seed(Long.parseLong(seed)));
+				progressFile.progress().updateProgressSector(progress);
+				
+				exchange.sendResponseHeaders(200, 0);
+			} else {
+				exchange.sendResponseHeaders(400, 0);
+			}
+		} catch (Exception e) {
+			System.err.println("HTTP request generated exception");
+			e.printStackTrace();
+			exchange.sendResponseHeaders(500, 0);
+		}
+		stream.close();
+	}
+	
+}

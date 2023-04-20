@@ -12,12 +12,12 @@ public class SeedDatabase {
 		this.random = new Random();
 	}
 	
-	public long getProgress() {
+	public long getProgressSector() {
 		int i = this.random.nextInt(256);
 		return (long) i << 40 | (long) this.progress[i];
 	}
 	
-	public void setProgress(long val) {
+	public void updateProgressSector(long val) {
 		int index = (int) (val >> 40 & 0xFF);
 		long prog = val & 0xFFFFFFFFFFL;
 		if (this.progress[index] < prog)

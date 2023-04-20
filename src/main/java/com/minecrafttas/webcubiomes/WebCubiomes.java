@@ -1,5 +1,6 @@
 package com.minecrafttas.webcubiomes;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class WebCubiomes {
 	
 	// WebCubiomes Instance
 	private static WebCubiomes instance;
-
+	
 	/**
 	 * Returns the instance of WebCubiomes
 	 * @return WebCubiomes Instance
@@ -28,9 +29,17 @@ public class WebCubiomes {
 
 	private ProgressFile progressFile;
 	private Map<Runnable, Long> listeners;
+	private WebCubiomesAPI api;
 	
 	private WebCubiomes() {
 		this.listeners = new HashMap<>();
+		
+		try {
+			this.api = new WebCubiomesAPI();
+		} catch (IOException e) {
+			System.err.println("Could not initialize Web Cubiomes API");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -39,6 +48,7 @@ public class WebCubiomes {
 	 */
 	public void loadProgressFile(ProgressFile progressFile) {
 		this.progressFile = progressFile;
+		this.api.updateSeq();
 		for (var entry : new HashMap<>(this.listeners).entrySet())
 			if (System.currentTimeMillis() - entry.getValue() > 300000)
 				this.listeners.remove(entry.getKey());
