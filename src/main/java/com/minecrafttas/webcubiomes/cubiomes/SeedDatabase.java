@@ -36,7 +36,7 @@ public class SeedDatabase {
 	}
 	
 	/**
-	 * Parse seed database from st ring
+	 * Parse seed database from string
 	 * @param data Seed database
 	 * @return Parsed seed database
 	 */

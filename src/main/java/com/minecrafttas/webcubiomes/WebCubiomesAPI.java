@@ -48,9 +48,10 @@ public class WebCubiomesAPI implements HttpHandler {
 		var progressFile = WebCubiomes.getInstance().getProgressFile();
 		var stream = exchange.getResponseBody();
 		try {
-			if (progressFile == null) {
+			if (progressFile == null) { // no progress loaded
 				exchange.sendResponseHeaders(500, 0);
-			} else if ("Fetch".equals(status)) {
+			} else if ("Fetch".equals(status)) { // obtain and send job
+				// obtain job and convert to body
 				var lines = progressFile.obtainJobProgressFile();
 				
 				var job = "";
@@ -58,22 +59,40 @@ public class WebCubiomesAPI implements HttpHandler {
 					job += line + "\n";
 				byte[] out = job.getBytes();
 				
+				// send response
 				exchange.sendResponseHeaders(200, out.length);
 				stream.write(out);
 				stream.close();
-			} else if ("Update".equals(status) && this.seq.equalsIgnoreCase(headers.getFirst("Seq"))) {
+				
+				// log stuff
+				System.out.println("=== JOB FETCHED ===");
+				System.out.println("Ip: " + exchange.getRemoteAddress().getHostString());
+				System.out.println(out);
+				System.out.println();
+			} else if ("Update".equals(status) && this.seq.equalsIgnoreCase(headers.getFirst("Seq"))) { // update progress
+				// parse progress
 				var progress = Long.parseUnsignedLong(headers.getFirst("Progress"));
 				var seeds = new String(exchange.getRequestBody().readNBytes(Integer.parseInt(exchange.getRequestHeaders().getFirst("Content-Length"))));
 				
-				for (var seed : seeds.split(":"))
+				// update progress and seeds
+				var frags = seeds.split(":");
+				for (var seed : frags)
 					progressFile.seeds().add(new Seed(Long.parseLong(seed)));
 				progressFile.progress().updateProgressSector(progress);
 				
 				exchange.sendResponseHeaders(200, 0);
-			} else {
+				
+				// log stuff
+				System.out.println("=== JOB FINISHED ===");
+				System.out.println("Ip: " + exchange.getRemoteAddress().getHostString());
+				System.out.println("Progress: " + progress);
+				System.out.println("Seeds found: " + frags.length);
+				System.out.println();
+			} else { // no valid request
 				exchange.sendResponseHeaders(400, 0);
 			}
 		} catch (Exception e) {
+			// something went wrong
 			System.err.println("HTTP request generated exception");
 			e.printStackTrace();
 			exchange.sendResponseHeaders(500, 0);

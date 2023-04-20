@@ -54,6 +54,15 @@ public class WebCubiomes {
 				this.listeners.remove(entry.getKey());
 			else
 				entry.getKey().run();
+		
+		if (progressFile != null) {
+			System.out.println("=== PROGRESS LOADED ===");
+			for (String line : progressFile.updateProgressFile())
+				System.out.println(line);
+		} else {
+			System.out.println("=== PROGRESS UNLOADED ===");
+		}
+		System.out.println();
 	}
 	
 	/**
