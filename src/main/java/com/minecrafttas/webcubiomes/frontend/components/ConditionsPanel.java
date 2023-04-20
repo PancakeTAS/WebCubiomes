@@ -27,8 +27,6 @@ public class ConditionsPanel extends VerticalLayout {
 	
 	private TextField mcField; // pointless combo box, could just be a text field but i like the arrow
 	private TextField searchModeField;
-	private TextField seedTextField;
-	
 
 	private Upload uploadButton;
 	private Button downloadButton;
@@ -41,7 +39,6 @@ public class ConditionsPanel extends VerticalLayout {
 		this.conditionsGrid = new Grid<>();
 		this.mcField = new TextField("Minecraft Version");
 		this.searchModeField = new TextField("Search Mode");
-		this.seedTextField = new TextField("Starting Seed");
 		//this.uploadButton = new Upload(...); below
 		this.downloadButton = new Button("Save progress");
 		this.unloadButton = new Button("Unload progress");
@@ -56,7 +53,6 @@ public class ConditionsPanel extends VerticalLayout {
 		// Make configuration elements read only
 		this.mcField.setReadOnly(true);
 		this.searchModeField.setReadOnly(true);
-		this.seedTextField.setReadOnly(true);
 		
 		// Create upload button
 		MemoryBuffer file = new MemoryBuffer(); // upload buffer
@@ -71,9 +67,9 @@ public class ConditionsPanel extends VerticalLayout {
 		}); // make button full width
 		
 		// Create layout for configuration elements
-		this.controlElements = new HorizontalLayout(this.mcField, this.searchModeField, this.seedTextField);
+		this.controlElements = new HorizontalLayout(this.mcField, this.searchModeField);
 		this.controlElements.setWidthFull();
-		this.controlElements.setFlexGrow(1, this.mcField, this.searchModeField, this.seedTextField);
+		this.controlElements.setFlexGrow(1, this.mcField, this.searchModeField);
 		
 		// Create layout for save/load/unload buttons
 		this.controlButtons = new HorizontalLayout(this.uploadButton, this.downloadButton, this.unloadButton);
@@ -107,7 +103,7 @@ public class ConditionsPanel extends VerticalLayout {
 				return;
 			
 			// Create progress file download
-			var lines = progressFile.updateProgressFile(webcubiomes.getProgress().get());
+			var lines = progressFile.updateProgressFile();
 			var out = "";
 			for (String l : lines)
 				out += l + "\n";
@@ -132,12 +128,10 @@ public class ConditionsPanel extends VerticalLayout {
 				this.conditionsGrid.setItems(new Condition[0]);
 				this.mcField.setValue("");
 				this.searchModeField.setValue("");
-				this.seedTextField.setValue("");
 			} else {
 				this.conditionsGrid.setItems(progressFile.conditions());
 				this.mcField.setValue(progressFile.mc());
 				this.searchModeField.setValue(progressFile.is48Bit() ? "48-bit family blocks" : "incremental");
-				this.seedTextField.setValue(Long.toUnsignedString(progressFile.progress()));
 			}
 		});
 	}

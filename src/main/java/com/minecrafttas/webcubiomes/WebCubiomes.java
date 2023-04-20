@@ -2,7 +2,6 @@ package com.minecrafttas.webcubiomes;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.minecrafttas.webcubiomes.cubiomes.ProgressFile;
 
@@ -28,11 +27,9 @@ public class WebCubiomes {
 	}
 
 	private ProgressFile progressFile;
-	private AtomicLong progress;
 	private Map<Runnable, Long> listeners;
 	
 	private WebCubiomes() {
-		this.progress = new AtomicLong();
 		this.listeners = new HashMap<>();
 	}
 	
@@ -42,7 +39,6 @@ public class WebCubiomes {
 	 */
 	public void loadProgressFile(ProgressFile progressFile) {
 		this.progressFile = progressFile;
-		this.progress.set(progressFile == null ? -1 : progressFile.progress());
 		for (var entry : new HashMap<>(this.listeners).entrySet())
 			if (System.currentTimeMillis() - entry.getValue() > 300000)
 				this.listeners.remove(entry.getKey());
@@ -67,12 +63,4 @@ public class WebCubiomes {
 		return this.progressFile;
 	}
 
-	/**
-	 * Return the current progress
-	 * @return Current Progress
-	 */
-	public AtomicLong getProgress() {
-		return this.progress;
-	}
-	
 }
