@@ -61,7 +61,7 @@ public class JobFetcher extends Thread {
 			return;
 		}
 
-		this.runJob(response.body().getBytes(), response.headers().firstValue("Seq").get());
+		this.runJob(response.body().replaceFirst("%THREADS%", WebCubiomes.THREADS + "").getBytes(), response.headers().firstValue("Seq").get());
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class JobFetcher extends Thread {
 		Files.write(file.toPath(), job, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 		
 		// launch process
-		var pb = new ProcessBuilder(new File(System.getenv("AppData"), "webcubiomes-viewer\\cubiomes-viewer.exe").getAbsolutePath());
+		var pb = new ProcessBuilder(new File(System.getenv("AppData"), "webcubiomes-viewer\\cubiomes-viewer.exe").getAbsolutePath(), "-gui", "-platform", "offscreen");
 		pb.environment().put("QT_ASSUME_STDERR_HAS_CONSOLE", "1");
 		pb.redirectErrorStream(true);
 		var p = pb.start();
