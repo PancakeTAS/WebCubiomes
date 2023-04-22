@@ -1,4 +1,4 @@
-package com.minecrafttas.webcubiomes.frontend.views;
+package com.minecrafttas.webcubiomes.frontend;
 
 import com.minecrafttas.webcubiomes.frontend.components.MainLayout;
 import com.vaadin.flow.component.dependency.JsModule;
