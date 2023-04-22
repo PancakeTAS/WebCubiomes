@@ -67,7 +67,7 @@ public class WebCubiomesAPI implements HttpHandler {
 				// log stuff
 				System.out.println("=== JOB FETCHED ===");
 				System.out.println("Ip: " + exchange.getRemoteAddress().getHostString());
-				System.out.println(out);
+				System.out.println(job);
 				System.out.println();
 			} else if ("Update".equals(status) && this.seq.equalsIgnoreCase(headers.getFirst("Seq"))) { // update progress
 				// parse progress
