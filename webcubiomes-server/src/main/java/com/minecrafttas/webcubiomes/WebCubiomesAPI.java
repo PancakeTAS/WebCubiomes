@@ -60,6 +60,7 @@ public class WebCubiomesAPI implements HttpHandler {
 				byte[] out = job.getBytes();
 				
 				// send response
+				exchange.getResponseHeaders().set("Seq", this.seq);
 				exchange.sendResponseHeaders(200, out.length);
 				stream.write(out);
 				stream.close();
