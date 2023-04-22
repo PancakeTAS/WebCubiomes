@@ -1,8 +1,8 @@
 package com.minecrafttas.webcubiomes;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.minecrafttas.webcubiomes.cubiomes.ProgressFile;
 
@@ -28,11 +28,11 @@ public class WebCubiomes {
 	}
 
 	private ProgressFile progressFile;
-	private Map<Runnable, Long> listeners;
+	private List<Runnable> listeners;
 	private WebCubiomesAPI api;
 	
 	private WebCubiomes() {
-		this.listeners = new HashMap<>();
+		this.listeners = new ArrayList<>();
 		
 		try {
 			this.api = new WebCubiomesAPI();
@@ -49,11 +49,11 @@ public class WebCubiomes {
 	public void loadProgressFile(ProgressFile progressFile) {
 		this.progressFile = progressFile;
 		this.api.updateSeq();
-		for (var entry : new HashMap<>(this.listeners).entrySet())
-			if (System.currentTimeMillis() - entry.getValue() > 300000)
-				this.listeners.remove(entry.getKey());
-			else
-				entry.getKey().run();
+		for (var r : this.listeners)
+			r.run();
+		
+		if (this.listeners.size() > 15)
+			this.listeners = this.listeners.subList(this.listeners.size()-15, this.listeners.size());
 		
 		if (progressFile != null) {
 			System.out.println("=== PROGRESS LOADED ===");
@@ -70,7 +70,7 @@ public class WebCubiomes {
 	 * @param r Listener
 	 */
 	public void registerListener(Runnable r) {
-		this.listeners.put(r, System.currentTimeMillis());
+		this.listeners.add(r);
 		r.run();
 	}
 	
