@@ -7,7 +7,7 @@ import java.nio.file.StandardCopyOption;
 
 public class CubiomesDownloader {
 	private static final String VERSION = "3.2.1";
-	private static final String CUBIOMES_VIEWER_URL = "https://maven.mgnet.work/main/com/github/cubitect/webcubiomes-viewer/" + VERSION + "/cubiomes.zip";
+	private static final String CUBIOMES_VIEWER_URL = "https://maven.mgnet.work/main/com/github/cubitect/webcubiomes-viewer/" + VERSION + "/webcubiomes-viewer.zip";
 	
 	/**
 	 * Downloads cubiomes or nothing if already installed
