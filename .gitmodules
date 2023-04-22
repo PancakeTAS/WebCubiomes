@@ -1,0 +1,3 @@
+[submodule "webcubiomes-viewer"]
+	path = webcubiomes-viewer
+	url = https://github.com/Cubitect/cubiomes-viewer
