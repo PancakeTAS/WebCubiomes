@@ -1,15 +1,22 @@
+# Eclipse project files
 .settings
-frontend/generated
-src/main/dev-bundle
-frontend/index.html
-package-lock.json
-node_modules
-target
-.classpath
 .project
-types.d.ts
-vite.config.ts
-vite.generated.ts
-tsconfig.json
-bin
+.classpath
+.factorypath
+
+# Build files
 .gradle
+bin
+target
+build
+
+# Vaadin auto-generated files
+webcubiomes-server/frontend/generated
+webcubiomes-server/frontend/index.html
+webcubiomes-server/src/main/dev-bundle
+webcubiomes-server/package-lock.json
+webcubiomes-server/node_modules
+webcubiomes-server/types.d.ts
+webcubiomes-server/vite.config.ts
+webcubiomes-server/vite.generated.ts
+webcubiomes-server/tsconfig.json
