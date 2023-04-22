@@ -16,6 +16,9 @@ public record ProgressFile(String[] initialProgressFile, String mc, boolean is48
 	public String[] updateProgressFile() {
 		var newProgressFile = new ArrayList<String>();
 		for (String l : this.initialProgressFile) {
+			if (l.startsWith("#SeedDatabase:"))
+				continue;
+			
 			if (l.startsWith("#Progress:"))
 				l = "#Progress: 0\n#SeedDatabase:" + this.progress.toString();
 			
@@ -36,8 +39,14 @@ public record ProgressFile(String[] initialProgressFile, String mc, boolean is48
 	public String[] obtainJobProgressFile() {
 		var newProgressFile = new ArrayList<String>();
 		for (String l : this.initialProgressFile) {
+			if (l.startsWith("#SeedDatabase:"))
+				continue;
+			
 			if (l.startsWith("#Progress:"))
 				l = "#Progress: " + Long.toUnsignedString(this.progress.getProgressSector());
+			
+			if (l.startsWith("#Threads:"))
+				l = "#Threads:  %THREADS%";
 			
 			if (l.contains(":"))
 				newProgressFile.add(l);
