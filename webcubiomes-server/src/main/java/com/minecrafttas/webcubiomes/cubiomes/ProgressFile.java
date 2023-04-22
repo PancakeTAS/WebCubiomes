@@ -63,7 +63,7 @@ public record ProgressFile(String[] initialProgressFile, String mc, boolean is48
 			else if (l.startsWith("#Search:"))
 				is48Bit = Integer.parseInt(l.split("\\:")[1].trim()) == 1;
 			else if (l.startsWith("#SeedDatabase:"))
-				progress = SeedDatabase.parseDatabase(l.split("\\:")[1].trim());
+				progress = SeedDatabase.parseDatabase(l.split("\\:", 2)[1].trim());
 			else if (l.startsWith("#Cond:"))
 				conditions.add(Condition.parseCondition(HexFormat.of().parseHex(l.split("\\:")[1].trim())));
 			else if (!l.contains(":"))

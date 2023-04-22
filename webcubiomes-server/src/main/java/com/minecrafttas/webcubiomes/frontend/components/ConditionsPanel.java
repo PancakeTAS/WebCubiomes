@@ -88,6 +88,7 @@ public class ConditionsPanel extends VerticalLayout {
 				byte[] data = file.getInputStream().readNBytes((int) e.getContentLength());
 				WebCubiomes.getInstance().loadProgressFile(ProgressFile.parseProgressFile(new String(data).split("\n")));
 			} catch (Exception e1) {
+				e1.printStackTrace();
 				// don't care
 			}
 			// remove files below upload button
