@@ -1,0 +1,28 @@
+plugins {
+	id 'org.beryx.jlink' version '2.26.0'
+}
+
+group = 'com.minecrafttas'
+version = '0.0.0.1'
+
+sourceCompatibility = targetCompatibility = 19
+
+application {
+	mainModule = "WebCubiomes"
+	mainClass = 'com.minecrafttas.webcubiomes.main.Main'
+}
+
+jlink {
+	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+	launcher {
+		name = 'WebCubiomes'
+		noConsole = true
+	}
+	jpackage {
+		imageName = 'Web Cubiomes'
+		vendor = 'Minecraft TAS'
+		installerType = 'msi'
+		icon = 'src/main/resources/icon.ico'
+		installerOptions = ['--description', 'Client for Web Cubiomes jobs', '--win-menu', '--win-dir-chooser']
+	}
+}
