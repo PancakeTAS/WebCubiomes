@@ -39,6 +39,14 @@ public class SeedDatabase {
 	}
 	
 	/**
+	 * Returns progress array
+	 * @return Progress array
+	 */
+	public long[] getProgress() {
+		return this.progress;
+	}
+	
+	/**
 	 * Parse seed database from string
 	 * @param data Seed database
 	 * @return Parsed seed database

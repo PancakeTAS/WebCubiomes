@@ -1,5 +1,6 @@
 package com.minecrafttas.webcubiomes.frontend.components;
 
+import com.minecrafttas.webcubiomes.WebCubiomes;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
@@ -52,47 +53,30 @@ public class ProgressGrid extends VerticalLayout {
         this.grid.addColumn(Room::room).setHeader("Room").setAutoWidth(true);
         this.grid.addColumn(Room::progress).setHeader("Progress").setAutoWidth(true);
         this.grid.addColumn(Room::progressInPercentage).setHeader("Progress (in %)").setAutoWidth(true);
-
-        // Set grid items
-        this.grid.setItems(
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-            new Room("0xBF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%"),
-        	new Room("0x0F", "0x0000000000", "0%"),
-            new Room("0xAF", "0x0000000000", "0%")
-        );
         
         // Add to main layout
 		this.addClassName(Padding.LARGE);
         this.setPadding(false);
         this.setSpacing(false);
         this.add(this.header, this.grid);
+	
+		// Add listener
+		WebCubiomes.getInstance().registerListener(() -> {
+			var file = WebCubiomes.getInstance().getProgressFile();
+			if (file == null) {
+				this.grid.setItems(new Room[0]);
+			} else {
+				var progress = file.progress().getProgress();
+				var items = new Room[progress.length];
+				for (int i = 0; i < progress.length; i++) {
+					var val = progress[i];
+					var room = (int) (val >> 40 & 0xFF);
+					var seed = val & 0xFFFFFFFFFFL;
+					items[i] = new Room("0x" + Integer.toHexString(room), "0x" + Long.toHexString(val), ((int) (((double) seed / (double) 0xFFFFFFFFFFL) * 100000) / 100.0D) + "%");
+				}
+				this.grid.setItems(items);
+			}
+		});
 	}
 	
 }
