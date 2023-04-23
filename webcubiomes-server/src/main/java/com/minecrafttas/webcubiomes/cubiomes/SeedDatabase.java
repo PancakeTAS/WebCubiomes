@@ -10,8 +10,8 @@ public class SeedDatabase {
 	private long[] progress; // progress for 256 different structure-seed-bit 0-7
 	private Random random;
 	
-	public SeedDatabase(long[] progress) {
-		this.progress = progress;
+	public SeedDatabase() {
+		this.progress = new long[256];
 		this.random = new Random();
 	}
 	
@@ -41,7 +41,7 @@ public class SeedDatabase {
 	 * @return Parsed seed database
 	 */
 	public static SeedDatabase parseDatabase(String data) {
-		var db = new SeedDatabase(new long[256]);
+		var db = new SeedDatabase();
 		var frag = data.split("\\:");
 		for (int i = 0; i < 256; i++)
 			db.progress[i] = Long.parseUnsignedLong(frag[i]);
