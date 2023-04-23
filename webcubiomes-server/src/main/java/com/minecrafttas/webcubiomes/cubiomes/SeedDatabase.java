@@ -27,12 +27,15 @@ public class SeedDatabase {
 	/**
 	 * Updates progress sector based on seed checked
 	 * @param val Seed last checked by client
+	 * @return Previous progress
 	 */
-	public void updateProgressSector(long val) {
+	public long updateProgressSector(long val) {
 		int index = (int) (val >> 40 & 0xFF);
 		long prog = val & 0xFFFFFFFFFFL;
+		var prevProgress = this.progress[index];
 		if (this.progress[index] < prog)
 			this.progress[index] = prog;
+		return prevProgress;
 	}
 	
 	/**

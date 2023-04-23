@@ -79,9 +79,10 @@ public class WebCubiomesAPI implements HttpHandler {
 				var frags = seeds.split(":");
 				for (var seed : frags)
 					progressFile.seeds().add(new Seed(Long.parseLong(seed)));
-				progressFile.progress().updateProgressSector(progress);
+				var prevProgress = progressFile.progress().updateProgressSector(progress);
 				
 				exchange.sendResponseHeaders(200, 0);
+				progressFile.statistics().jobReturned((progress & 0xFFFFFFFFFFL) - prevProgress, frags.length);
 				
 				// log stuff
 				System.out.println("=== JOB FINISHED ===");
