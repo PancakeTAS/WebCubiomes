@@ -16,7 +16,7 @@ public record ProgressFile(String[] initialProgressFile, String mc, boolean is48
 	public String[] updateProgressFile() {
 		var newProgressFile = new ArrayList<String>();
 		for (String l : this.initialProgressFile) {
-			if (l.startsWith("#SeedDatabase:"))
+			if (l.startsWith("#SeedDatabase:") || l.startsWith("#StatisticsDatabase:"))
 				continue;
 			
 			if (l.startsWith("#Progress:"))
