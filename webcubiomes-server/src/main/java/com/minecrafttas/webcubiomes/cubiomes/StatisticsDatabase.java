@@ -65,7 +65,7 @@ public class StatisticsDatabase {
 	 */
 
 	public long getSeedsChecked() {
-		return this.seedsChecked;
+		return this.seedsChecked * 65535;
 	}
 	
 	public long getSeedsFound() {
