@@ -11,3 +11,19 @@
 .main-layout {
 	max-width: 40%;
 }
+
+.dashboard-view {
+	padding: var(--lumo-space-m);
+}
+
+.dashboard-view vaadin-board-row > * {
+	border-bottom: 1px solid var(--lumo-contrast-10pct);
+}
+
+.noborder > * {
+	border-bottom: none !important;
+}
+
+body {
+	overflow: hidden;
+}

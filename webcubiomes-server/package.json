@@ -7,8 +7,10 @@
     "@vaadin/app-layout": "24.0.2",
     "@vaadin/avatar": "24.0.2",
     "@vaadin/avatar-group": "24.0.2",
+    "@vaadin/board": "24.0.2",
     "@vaadin/bundles": "24.0.2",
     "@vaadin/button": "24.0.2",
+    "@vaadin/charts": "24.0.2",
     "@vaadin/checkbox": "24.0.2",
     "@vaadin/checkbox-group": "24.0.2",
     "@vaadin/combo-box": "24.0.2",
@@ -91,8 +93,10 @@
       "@vaadin/app-layout": "24.0.2",
       "@vaadin/avatar": "24.0.2",
       "@vaadin/avatar-group": "24.0.2",
+      "@vaadin/board": "24.0.2",
       "@vaadin/bundles": "24.0.2",
       "@vaadin/button": "24.0.2",
+      "@vaadin/charts": "24.0.2",
       "@vaadin/checkbox": "24.0.2",
       "@vaadin/checkbox-group": "24.0.2",
       "@vaadin/combo-box": "24.0.2",
@@ -168,7 +172,7 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "91b9078d7f233b0da51d74dc4ed341f7ab4c00275214b4039d946e617a06632f"
+    "hash": "c7e0e4ecf0ace7da2f55ef46200fae6029534bf73f9a81618d1c0ca32981f1b3"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -235,6 +239,8 @@
     "lit": "$lit",
     "@polymer/polymer": "$@polymer/polymer",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
-    "date-fns": "$date-fns"
+    "date-fns": "$date-fns",
+    "@vaadin/board": "$@vaadin/board",
+    "@vaadin/charts": "$@vaadin/charts"
   }
 }

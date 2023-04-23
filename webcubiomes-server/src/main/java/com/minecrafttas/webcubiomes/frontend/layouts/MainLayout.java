@@ -1,5 +1,7 @@
-package com.minecrafttas.webcubiomes.frontend.components;
+package com.minecrafttas.webcubiomes.frontend.layouts;
 
+import com.minecrafttas.webcubiomes.frontend.components.ConditionsPanel;
+import com.minecrafttas.webcubiomes.frontend.components.SeedsPanel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class MainLayout extends VerticalLayout {
