@@ -15,6 +15,7 @@ public class StatisticsDatabase {
 	private long seedsFound;
 	private int[] jobsReturned;
 	private Date startingTime;
+	private long timeSearched;
 	
 	public StatisticsDatabase() {
 		this.jobsReturned = new int[7];
@@ -42,7 +43,7 @@ public class StatisticsDatabase {
 		var frags = data.split("\\:");
 		db.seedsChecked = Long.parseUnsignedLong(frags[0]);
 		db.seedsFound = Long.parseUnsignedLong(frags[1]);
-		db.startingTime = Date.from(Instant.ofEpochSecond(Long.parseUnsignedLong(frags[2])));
+		db.timeSearched = Long.parseUnsignedLong(frags[2]);
 		for (int i = 3; i < 10; i++)
 			db.jobsReturned[i-3] = Integer.parseInt(frags[i]);
 		return db;
@@ -53,7 +54,7 @@ public class StatisticsDatabase {
 		var data = "";
 		data += Long.toUnsignedString(this.seedsChecked) + ":";
 		data += Long.toUnsignedString(this.seedsFound) + ":";
-		data += Long.toUnsignedString(this.startingTime.toInstant().getEpochSecond()) + ":";
+		data += Long.toUnsignedString(Duration.between(this.startingTime.toInstant(), Instant.now()).getSeconds() + this.timeSearched) + ":";
 		for (int i : this.jobsReturned)
 			data += i + ":";
 		return data;
@@ -76,7 +77,7 @@ public class StatisticsDatabase {
 	}
 	
 	public String getTimeWorkedOn() {
-		var dur = Duration.between(this.startingTime.toInstant(), Instant.now());
+		var dur = Duration.between(this.startingTime.toInstant(), Instant.now()).plusSeconds(this.timeSearched);
 		return String.format("%02d:%02d:%02d", dur.toHours(), dur.toMinutesPart(), dur.toSecondsPart());
 	}
 	
