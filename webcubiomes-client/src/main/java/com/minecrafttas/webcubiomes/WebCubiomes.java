@@ -3,7 +3,7 @@ package com.minecrafttas.webcubiomes;
 import javax.swing.JFrame;
 
 public class WebCubiomes extends JFrame {
-	public static int THREADS = 32;
+	public static int THREADS = 4;
 	
 	public WebCubiomes() {
 		super("Test");
