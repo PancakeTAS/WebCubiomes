@@ -92,7 +92,8 @@ public class SeedsChart extends VerticalLayout {
 					xAxis.setCategories("1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h");
 				else
 					xAxis.setCategories("1d", "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "10d");
-					
+				
+				i*= 10;
 				conf.addSeries(new ListSeries("Seeds checked", history.subList(i, Math.min(i + 10, history.size())).toArray(Long[]::new)));
 			}
 		});

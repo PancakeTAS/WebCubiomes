@@ -40,7 +40,7 @@ public class StatsLayout extends Board {
 				this.seedsChecked.setValue("0");
 				this.seedsFound.setValue("0");
 				this.activeClients.setValue("0");
-				this.timeSearched.setValue("0:0:0");
+				this.timeSearched.setValue("00:00:00");
 				
 				
 			} else {
