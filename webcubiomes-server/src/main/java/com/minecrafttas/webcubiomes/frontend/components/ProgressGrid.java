@@ -68,9 +68,8 @@ public class ProgressGrid extends VerticalLayout {
 			} else {
 				var progress = file.progress().getProgress();
 				var items = new Room[progress.length];
-				for (int i = 0; i < progress.length; i++) {
-					items[i] = new Room("0x" + Integer.toHexString(i), "0x" + Long.toHexString(progress[i]), ((int) (((double) progress[i] / (double) 0xFFFFFFFFFFL) * 100000) / 100.0D) + "%");
-				}
+				for (int i = 0; i < progress.length; i++)
+					items[i] = new Room("0x" + String.format("%02x", i).toUpperCase(), "0x" + Long.toHexString(progress[i]).toUpperCase(), ((int) (((double) progress[i] / (double) 0xFFFFFFFFFFL) * 100000) / 100.0D) + "%");
 				this.grid.setItems(items);
 			}
 		});
