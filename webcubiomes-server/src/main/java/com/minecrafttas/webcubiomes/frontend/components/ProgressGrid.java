@@ -49,7 +49,7 @@ public class ProgressGrid extends VerticalLayout {
         // Create grid
         this.grid = new Grid<>();
         this.grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        this.grid.setHeight("26vh");
+        this.grid.setHeight("76vh");
         this.grid.addColumn(Room::room).setHeader("Room").setAutoWidth(true);
         this.grid.addColumn(Room::progress).setHeader("Progress").setAutoWidth(true);
         this.grid.addColumn(Room::progressInPercentage).setHeader("Progress (in %)").setAutoWidth(true);
