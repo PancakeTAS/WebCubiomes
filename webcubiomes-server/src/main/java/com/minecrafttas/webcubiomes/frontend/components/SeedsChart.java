@@ -1,5 +1,6 @@
 package com.minecrafttas.webcubiomes.frontend.components;
 
+import com.minecrafttas.webcubiomes.WebCubiomes;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.ListSeries;
@@ -32,7 +33,7 @@ public class SeedsChart extends VerticalLayout {
         this.headerTitle.addClassNames(FontSize.XLARGE, Margin.NONE);
 
         // Create header subtitle
-        this.headerSubtitle = new Span("seeds/day");
+        this.headerSubtitle = new Span("seeds/time");
         this.headerSubtitle.addClassNames(TextColor.SECONDARY, FontSize.XSMALL);
 
         // Create header column
@@ -58,7 +59,6 @@ public class SeedsChart extends VerticalLayout {
 
         // Setup x axis
         var xAxis = new XAxis();
-        xAxis.setCategories("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11");
         conf.addxAxis(xAxis);
 
         // Setup plot options
@@ -67,16 +67,35 @@ public class SeedsChart extends VerticalLayout {
         plotOptions.setMarker(new Marker(false));
         conf.addPlotOptions(plotOptions);
 
-        // Set values
-        conf.addSeries(new ListSeries("Seeds checked", 189, 191, 291, 396, 501, 403, 609, 712, 729, 942, 1044, 1247));
-        conf.addSeries(new ListSeries("Seeds found", 138, 246, 248, 348, 352, 353, 463, 573, 778, 779, 885, 887));
-		
         // Add to main layout
 		this.addClassName(Padding.LARGE);
         this.setPadding(false);
         this.setSpacing(false);
         this.getElement().getThemeList().add("spacing-l");
         this.add(this.header, this.chart);
+        
+        // Add Listener
+		WebCubiomes.getInstance().registerListener(() -> {
+			var file = WebCubiomes.getInstance().getProgressFile();
+			if (file == null) {
+				xAxis.setCategories();
+				conf.setSeries();
+			} else {
+				var history = file.statistics().getHistory();
+				
+				int i = history.size() / 10;
+				if (i == 0)
+					xAxis.setCategories("1m", "2m", "3m", "4m", "5m", "6m", "7m", "8m", "9m", "10m");
+				else if (i == 1)
+					xAxis.setCategories("5m", "10m", "15m", "20m", "25m", "30m", "35m", "40m", "45m", "50m");
+				else if (i == 2)
+					xAxis.setCategories("1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h");
+				else
+					xAxis.setCategories("1d", "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "10d");
+					
+				conf.addSeries(new ListSeries("Seeds checked", history.subList(i, Math.min(i + 10, history.size())).toArray(Long[]::new)));
+			}
+		});
 	}
 	
 }

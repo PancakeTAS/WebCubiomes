@@ -3,6 +3,8 @@ package com.minecrafttas.webcubiomes;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.minecrafttas.webcubiomes.cubiomes.ProgressFile;
 
@@ -27,12 +29,15 @@ public class WebCubiomes {
 		return WebCubiomes.instance;
 	}
 
-	private ProgressFile progressFile;
+	private volatile ProgressFile progressFile;
 	private List<Runnable> listeners;
 	private WebCubiomesAPI api;
+	private Timer statsTimer;
 	
 	private WebCubiomes() {
 		this.listeners = new ArrayList<>();
+		this.statsTimer = new Timer();
+		this.rescheduleTimer();
 		
 		try {
 			this.api = new WebCubiomesAPI();
@@ -81,6 +86,37 @@ public class WebCubiomes {
 	 */
 	public ProgressFile getProgressFile() {
 		return this.progressFile;
+	}
+	
+	public void rescheduleTimer() {
+		// Find time for next history check
+		long time = 0L;
+		if (this.progressFile != null) {
+			var history = this.progressFile.statistics().getHistory();
+			if (history.size() < 10)
+				time = 1*60*1000L;
+			else if (history.size() >= 10)
+				time = 5*60*1000L;
+			else if (history.size() >= 20)
+				time = 60*60*1000L;
+			else if (history.size() >= 30)
+				time = 24*60*60*1000L;
+		} else {
+			time = 1000L;
+		}
+		// Run timer
+		this.statsTimer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				if (progressFile != null) {
+					var statistics = progressFile.statistics();
+					statistics.getHistory().add(statistics.getSeedsChecked());
+				}
+				
+				rescheduleTimer();
+			}
+		}, time);
 	}
 
 }

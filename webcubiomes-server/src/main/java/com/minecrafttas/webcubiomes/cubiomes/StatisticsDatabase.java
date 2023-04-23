@@ -4,7 +4,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Database for saving statistics
@@ -16,10 +18,12 @@ public class StatisticsDatabase {
 	private int[] jobsReturned;
 	private Date startingTime;
 	private long timeSearched;
+	private List<Long> seedsHistory;
 	
 	public StatisticsDatabase() {
 		this.jobsReturned = new int[7];
 		this.startingTime = Date.from(Instant.now());
+		this.seedsHistory = new ArrayList<>();
 	}
 	
 	/**
@@ -46,6 +50,9 @@ public class StatisticsDatabase {
 		db.timeSearched = Long.parseUnsignedLong(frags[2]);
 		for (int i = 3; i < 10; i++)
 			db.jobsReturned[i-3] = Integer.parseInt(frags[i]);
+		var size = Integer.parseInt(frags[10]);
+		for (int i = 10; i < 10 + size; i++)
+			db.seedsHistory.add(Long.parseUnsignedLong(frags[i]));
 		return db;
 	}
 	
@@ -57,6 +64,9 @@ public class StatisticsDatabase {
 		data += Long.toUnsignedString(Duration.between(this.startingTime.toInstant(), Instant.now()).getSeconds() + this.timeSearched) + ":";
 		for (int i : this.jobsReturned)
 			data += i + ":";
+		data += this.seedsHistory.size() + ":";
+		for (long i : this.seedsHistory)
+			data += Long.toUnsignedString(i) + ":";
 		return data;
 	}
 	
@@ -79,6 +89,10 @@ public class StatisticsDatabase {
 	public String getTimeWorkedOn() {
 		var dur = Duration.between(this.startingTime.toInstant(), Instant.now()).plusSeconds(this.timeSearched);
 		return String.format("%02d:%02d:%02d", dur.toHours(), dur.toMinutesPart(), dur.toSecondsPart());
+	}
+
+	public List<Long> getHistory() {
+		return this.seedsHistory;
 	}
 	
 }
