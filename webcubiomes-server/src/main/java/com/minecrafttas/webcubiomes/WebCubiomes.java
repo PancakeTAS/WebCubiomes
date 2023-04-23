@@ -58,7 +58,8 @@ public class WebCubiomes {
 		if (progressFile != null) {
 			System.out.println("=== PROGRESS LOADED ===");
 			for (String line : progressFile.updateProgressFile())
-				System.out.println(line);
+				if (line.startsWith("#"))
+					System.out.println(line);
 		} else {
 			System.out.println("=== PROGRESS UNLOADED ===");
 		}
