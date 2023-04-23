@@ -90,11 +90,13 @@ public class JobFetcher extends Thread {
 		// read input
 		var reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		var line = "";
-		while ((line = reader.readLine()) != null)
+		while ((line = reader.readLine()) != null) {
 			if (line.startsWith("SEED: "))
 				seeds.add(Long.parseLong(line.split("\\:")[1].trim()));
 			else if (line.startsWith("PROGRESS: "))
 				progress = Long.parseUnsignedLong(line.split("\\:")[1].trim());
+			System.out.println("[JobFetcher#Process] " + line);
+		}
 		
 		// wait until app is closed
 		p.waitFor();
