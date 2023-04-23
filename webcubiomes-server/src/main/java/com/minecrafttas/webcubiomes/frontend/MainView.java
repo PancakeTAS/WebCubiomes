@@ -11,7 +11,7 @@ import com.vaadin.flow.router.Route;
  * Main WebCubiomes View
  * @author Pancake
  */
-@PageTitle("Main")
+@PageTitle("Web Cubiomes")
 @Route(value = "")
 @JsModule("@vaadin/vaadin-lumo-styles/presets/compact.js")
 public class MainView extends HorizontalLayout {
